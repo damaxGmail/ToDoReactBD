@@ -1,0 +1,7 @@
+{
+  "typesTask": [
+    { "id": 1, "type": "CreateOrder"},
+	{ "id": 2, "type": "SendReport"},
+	{ "id": 3, "type": "MakePay"}
+  ]
+}

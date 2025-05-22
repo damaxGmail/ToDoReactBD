@@ -1,13 +1,26 @@
-// import { useState } from 'react'
+import { useState } from 'react'
 
-function App() {
+import { NewTask } from './components/NewTask/NewTask'
+import { TaskList } from './components/TaskList/TaskList'
+
+function LayoutApp({ Text }) {
 
 
 	return (
 		<>
-			<h1>Тест vite</h1>
+			<NewTask />
+			<TaskList />
 		</>
 	)
+}
+
+function App() {
+	const Text = "Тест vite";
+
+	return <LayoutApp
+		Text={Text}
+	/>;
+
 }
 
 export default App

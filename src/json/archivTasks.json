@@ -1,0 +1,17 @@
+{
+  "tasks": [
+    {"id": 1, "completed": false,"type": "CreateOrder",  "text": "Создать новый заказ"},
+    {
+      "id": 2,
+      "completed": false,
+      "type": "SendReport",
+      "text": "Отправить отчет"
+    },
+    {
+        "id": 3,
+        "completed": false,
+		"type": "MakePay",
+        "text": "Оформить оплату"
+    }
+  ]
+}
