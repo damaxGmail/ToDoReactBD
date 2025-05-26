@@ -20,10 +20,10 @@ const NewTaskLayout = () => {
 
 	return (
 		<div className={styles.root} >
-			<form className="create-task-block">
+			<form className={styles.create_task_block}>
 				<input
 					name="taskName"
-					className="create-task-block__input default-text-input"
+					className={styles.create_task_block__input}
 					type="text"
 					placeholder="Создайте новую задачу"
 					value={taskText}
@@ -31,13 +31,13 @@ const NewTaskLayout = () => {
 				/>
 				<button
 					type="submit"
-					className="create-task-block__button default-button"
+					className={styles.createTaskButton}
 					onClick={handleSubmit}
 				>
 					Создать
 				</button>
 			</form>
-		</div>
+		</div >
 
 	);
 }

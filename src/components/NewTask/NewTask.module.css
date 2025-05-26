@@ -1,46 +1,50 @@
-:root {
-  --primary-color: #546792;
-  --text-color: #ffffff;
-  --delete-button-background: #ff0000;
-  --checkbox-checked-background: #546791;
-  --checkbox-border-color: #000;
-  --checkbox-text-color: #fff;
-  --default-border-color: #000;
-  --error-color: #ff0000;
-  --modal-overlay: rgb(84, 103, 145, 0.6);
+.root {
+  width: 100%;
 }
 
-.create-task-block {
+.create_task_block {
+  display: flex;
+  gap: 10px;
+  align-items: center;
   position: relative;
 }
 
-.create-task-block__input {
+.create_task_block__input {
   border: 2px solid var(--primary-color);
   border-radius: 5px;
   color: var(--primary-color);
-
   font-size: 2rem;
   line-height: 2.5rem;
-  height: 40px;
   width: 50%;
-  padding: 0;
+  height: 45px;
+  padding: 0 10px;
   margin-bottom: 40px;
+
+  /* Чтобы фиксированная высота работала корректно */
+  box-sizing: border-box;
+
+  /* Опционально: remove browser default styling */
+  appearance: none;
 }
 
-.create-task-block__button {
-  height: 44px;
-}
-
-.create-task-block__button,
-.task-item__delete-button {
-  cursor: pointer;
-
+.createTaskButton {
   background-color: var(--primary-color);
   color: var(--text-color);
   border: none;
   padding: 5px 20px;
   border-radius: 5px;
-
   font-size: 1.5rem;
   line-height: 2.5rem;
+  cursor: pointer;
+  height: 45px;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+.create_task_block__input,
+.createTaskButton {
+  margin: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  line-height: normal;
 }
