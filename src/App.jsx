@@ -4,28 +4,6 @@ import { useState, useEffect } from 'react'
 import { NewTask } from './components/NewTask/NewTask'
 import { TaskList } from './components/TaskList/TaskList'
 
-const OLD_TASKES = [
-	{
-		"id": 1,
-		"completed": false,
-		"type": "CreateOrder",
-		"text": "Создать новый заказ"
-	},
-	{
-		"id": 2,
-		"completed": false,
-		"type": "SendReport",
-		"text": "Отправить отчет"
-	},
-	{
-		"id": 3,
-		"completed": false,
-		"type": "MakePay",
-		"text": "Оформить оплату"
-	}
-]
-
-
 function LayoutApp({ isLoading, task }) {
 
 	return (
@@ -46,11 +24,7 @@ function App() {
 	useEffect(() => {
 		setIsLoading(true);
 
-		new Promise((resolve) => {
-			setTimeout(() => {
-				resolve({ json: () => OLD_TASKES });
-			}, 2500);
-		})
+		fetch('http://localhost:3005/tasks')
 			.then((loadedData) => loadedData.json())
 			.then((loadedTasks) => {
 				setTask(loadedTasks);

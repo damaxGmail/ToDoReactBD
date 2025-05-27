@@ -1,6 +1,9 @@
 {
   "tasks": [
-    {"id": 1, "completed": false,"type": "CreateOrder",  "text": "Создать новый заказ"},
+    {"id": 1, "completed":
+	false,"type": "CreateOrder",
+	  "text": "Создать новый заказ"
+	},
     {
       "id": 2,
       "completed": false,
@@ -12,6 +15,12 @@
         "completed": false,
 		"type": "MakePay",
         "text": "Оформить оплату"
+    },
+	 {
+        "id": 4,
+        "completed": false,
+		"type": "test",
+        "text": "TestTest"
     }
   ]
 }
