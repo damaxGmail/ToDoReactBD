@@ -1,45 +1,44 @@
 import { useState, useEffect } from 'react';
-import styles from './TaskList.module.css';
+import { TaskListLayout } from './TaskListLayout'
 
-const TaskListLayout = ({ isLoading, task }) => {
-	return (
-		<div className={styles.tasks_list}>
-			<h2>Список задач:</h2>
-			{isLoading ? (
-				<div className={styles.loader}></div>
-			) : (
-				task.map(({ id, completed, type, text }) => (
+export const TaskList = ({ tasks, editTask, deleteTask }) => {
+	const [isLoading, setIsLoading] = useState(false);
 
-					<div key={id} className={styles.task_item}>
-						<div className={styles.task_item__main_container}>
-							<div className={styles.task_item__main_content}>
-								<form className={styles.checkbox_form}>
-									<input
-										className={styles.checkbox_form__checkbox}
-										type="checkbox"
-										id={id}
-										checked={completed}
-										readOnly
-									/>
-									<label htmlFor={id}></label>
-								</form>
-								<span className={styles.task_item__text}>{text}</span>
-							</div>
-							<button className={styles.task_item__delete_button}>Удалить</button>
-						</div>
-					</div>
+	const handleEditButton = (e) => {
+		e.preventDefault(); // отключаем перезагрузку страницы
 
-				))
-			)}
-		</div>
-	);
-};
+		fetch(`http://localhost:5703/tasks/${id}`, {
+			method: 'UPDATE',
+		})
+			.then(() => {
+				//deleteTask(id);
+			})
+			.catch((err) => {
+				console.error('Ошибка при редактировании:', err);
+			});
 
-export const TaskList = ({ isLoading, task }) => {
+	}
+	const handleDeleteButton = (id) => {
+		fetch(`http://localhost:5703/tasks/${id}`, {
+			method: 'DELETE',
+		})
+			.then(() => {
+				deleteTask(id);
+			})
+			.catch((err) => {
+				console.error('Ошибка при удалении:', err);
+			});
+	}
+
+
+
 	return (
 		<TaskListLayout
 			isLoading={isLoading}
-			task={task}
+			tasks={tasks}
+			handleEditButton={handleEditButton}
+			handleDeleteButton={handleDeleteButton}
+
 		/>
 	);
 };

@@ -1,50 +1,41 @@
 import { useState } from 'react';
-import styles from './NewTask.module.css';
+import { NewTaskLayout } from './NewTaskLayout';
 
-const NewTaskLayout = () => {
-
+export const NewTask = ({ addTask }) => {
 	const [taskText, setTaskText] = useState('');
 
 	const handleInputChange = (e) => {
 		setTaskText(e.target.value);
 	};
 
-	const handleSubmit = (e) => {
-		e.preventDefault(); // отключаем перезагрузку страницы
+	const addNewTask = (e) => {
+		e.preventDefault();
 		if (taskText.trim() !== '') {
-			console.log('Добавлена задача:', taskText);
-			// Здесь можно вызвать функцию для добавления задачи в общий список
-			setTaskText(''); // очищаем поле ввода
+			const newTask = {
+				id: Date.now().toString(),
+				completed: false,
+				type: 'MakeTask',
+				text: taskText.trim()
+			};
+
+			fetch('http://localhost:5703/tasks', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(newTask),
+			})
+				.then((res) => res.json())
+				.then((savedTask) => {
+					addTask(savedTask);
+					setTaskText('');
+				});
 		}
 	};
 
 	return (
-		<div className={styles.root} >
-			<form className={styles.create_task_block}>
-				<input
-					name="taskName"
-					className={styles.create_task_block__input}
-					type="text"
-					placeholder="Создайте новую задачу"
-					value={taskText}
-					onChange={handleInputChange}
-				/>
-				<button
-					type="submit"
-					className={styles.createTaskButton}
-					onClick={handleSubmit}
-				>
-					Создать
-				</button>
-			</form>
-		</div >
-
-	);
-}
-
-export const NewTask = () => {
-	return (
 		<NewTaskLayout
+			taskText={taskText}
+			onInputChange={handleInputChange}
+			onSubmit={addNewTask}
 		/>
-	)
-}
+	);
+};

@@ -1,26 +1,34 @@
 {
   "tasks": [
-    {"id": 1, "completed":
-	false,"type": "CreateOrder",
-	  "text": "Создать новый заказ"
-	},
     {
-      "id": 2,
+      "id": "1748530100945",
       "completed": false,
-      "type": "SendReport",
-      "text": "Отправить отчет"
+      "type": "MakeTask",
+      "text": "новая"
     },
     {
-        "id": 3,
-        "completed": false,
-		"type": "MakePay",
-        "text": "Оформить оплату"
+      "id": "1748530106905",
+      "completed": false,
+      "type": "MakeTask",
+      "text": "ывпявап"
     },
-	 {
-        "id": 4,
-        "completed": false,
-		"type": "test",
-        "text": "TestTest"
+    {
+      "id": "1748530113552",
+      "completed": false,
+      "type": "MakeTask",
+      "text": "вааааапаыр"
+    },
+    {
+      "id": "1748530119213",
+      "completed": false,
+      "type": "MakeTask",
+      "text": "яваппапорсаоволвпрлаеп"
+    },
+    {
+      "id": "1748530126657",
+      "completed": false,
+      "type": "MakeTask",
+      "text": "рэплыэверлжыаврэыаоржаыпрдаожрдлаопрдалдалвжрдлапрлдапжроаджворлдавор"
     }
   ]
 }

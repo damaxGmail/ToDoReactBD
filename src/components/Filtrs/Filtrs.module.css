@@ -1,0 +1,11 @@
+.task_item__find_button .task_item__sort_button {
+  background-color: #291995;
+  color: var(--text-color);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 1rem;
+  line-height: 2rem;
+  cursor: pointer;
+  justify-content: space-between;
+}
