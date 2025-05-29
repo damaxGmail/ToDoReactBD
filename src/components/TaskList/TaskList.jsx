@@ -1,24 +1,33 @@
 import { useState, useEffect } from 'react';
 import { TaskListLayout } from './TaskListLayout'
 
-export const TaskList = ({ tasks, editTask, deleteTask }) => {
+export const TaskList = ({ tasks, deleteTask, setTaskToEdit, isSorted }) => {
 	const [isLoading, setIsLoading] = useState(false);
+	const [sortedTasks, setSortedTasks] = useState(tasks);
 
-	const handleEditButton = (e) => {
-		e.preventDefault(); // отключаем перезагрузку страницы
+	useEffect(() => {
+		if (isSorted) {
+			const sorted = [...tasks].sort((a, b) =>
+				a.text.localeCompare(b.text)
+			);
+			setSortedTasks(sorted);
+		} else {
+			setSortedTasks(tasks);
+		}
+	}, [tasks, isSorted]);
 
-		fetch(`http://localhost:5703/tasks/${id}`, {
-			method: 'UPDATE',
-		})
-			.then(() => {
-				//deleteTask(id);
-			})
-			.catch((err) => {
-				console.error('Ошибка при редактировании:', err);
-			});
 
-	}
+	const handleEditButton = (id) => {
+		const task = tasks.find(t => t.id === id);
+		if (task) {
+			// Сначинаем редактирование
+			setTaskToEdit(task);
+		}
+	};
+
+
 	const handleDeleteButton = (id) => {
+
 		fetch(`http://localhost:5703/tasks/${id}`, {
 			method: 'DELETE',
 		})
@@ -30,15 +39,17 @@ export const TaskList = ({ tasks, editTask, deleteTask }) => {
 			});
 	}
 
-
-
 	return (
 		<TaskListLayout
 			isLoading={isLoading}
-			tasks={tasks}
+
+			tasks={isSorted ? sortedTasks : tasks}
+
+			setTaskToEdit={setTaskToEdit}
+
+			deleteTask={deleteTask}
 			handleEditButton={handleEditButton}
 			handleDeleteButton={handleDeleteButton}
-
 		/>
 	);
 };

@@ -8,34 +8,40 @@ export const NewTask = ({ addTask }) => {
 		setTaskText(e.target.value);
 	};
 
-	const addNewTask = (e) => {
+	const handleSubmit = (e) => {
 		e.preventDefault();
-		if (taskText.trim() !== '') {
-			const newTask = {
-				id: Date.now().toString(),
-				completed: false,
-				type: 'MakeTask',
-				text: taskText.trim()
-			};
+		const trimmedText = taskText.trim();
 
-			fetch('http://localhost:5703/tasks', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(newTask),
-			})
-				.then((res) => res.json())
-				.then((savedTask) => {
-					addTask(savedTask);
-					setTaskText('');
-				});
+		if (!trimmedText) {
+			console.log('Ошибка: текст задачи пустой');
+			return;
 		}
+
+		const newTask = {
+			id: Date.now().toString(),
+			completed: false,
+			type: 'MakeTask',
+			text: trimmedText
+		};
+
+		fetch('http://localhost:5703/tasks', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(newTask),
+		})
+			.then(res => res.json())
+			.then(savedTask => {
+				addTask(savedTask);
+			});
+
+		setTaskText('');
 	};
 
 	return (
 		<NewTaskLayout
 			taskText={taskText}
 			onInputChange={handleInputChange}
-			onSubmit={addNewTask}
+			onSubmit={handleSubmit}
 		/>
 	);
 };

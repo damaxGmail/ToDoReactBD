@@ -1,12 +1,6 @@
 import { FiltrsLayout } from './FiltrsLayout';
 
-export const Filtrs = () => {
-
-
-	const handleSortTaks = (e) => {
-		e.preventDefault(); // отключаем перезагрузку страницы
-		console.log('Процесс сортировки');
-	}
+export const Filtrs = ({ isSorted, toggleSort }) => {
 
 	const handleFindTaks = (e) => {
 		e.preventDefault(); // отключаем перезагрузку страницы
@@ -16,11 +10,12 @@ export const Filtrs = () => {
 
 	return (
 		<FiltrsLayout
-			handleSortTaks={handleSortTaks}
+			isSorted={isSorted}
+			toggleSort={toggleSort}
 			handleFindTaks={handleFindTaks}
 		/>
 
 	);
-}
+};
 
-export default Filtrs;
+

@@ -4,9 +4,9 @@ import { useState, useEffect } from 'react';
 
 import { NewTask } from './components/NewTask/NewTask'
 import { TaskList } from './components/TaskList/TaskList'
-import Filtr from './components/Filtrs/Filtrs'
+import { Filtrs } from './components/Filtrs/Filtrs'
 
-function LayoutApp({ tasks, addTask, editTask, deleteTask }) {
+function LayoutApp({ tasks, addTask, setTaskToEdit, deleteTask, toggleSort, isSorted }) {
 
 	return (
 		<>
@@ -17,11 +17,11 @@ function LayoutApp({ tasks, addTask, editTask, deleteTask }) {
 
 				<div className={styles.mainContent}>
 					<div className={styles.filtrsContainer}>
-						<Filtr />
+						<Filtrs isSorted={isSorted} toggleSort={toggleSort} />
 					</div>
 
 					<div className={styles.taskListContainer}>
-						<TaskList tasks={tasks} deleteTask={deleteTask} />
+						<TaskList tasks={tasks} deleteTask={deleteTask} setTaskToEdit={setTaskToEdit} isSorted={isSorted} />
 					</div>
 				</div>
 			</div>
@@ -31,7 +31,8 @@ function LayoutApp({ tasks, addTask, editTask, deleteTask }) {
 }
 function App() {
 	const [tasks, setTasks] = useState([]);
-
+	const [taskToEdit, setTaskToEdit] = useState(null);
+	const [isSorted, setIsSorted] = useState(false);
 
 	//npx json-server@0.17.4 --watch src/json/archivTasks.json --port 5703
 	useEffect(() => {
@@ -40,24 +41,35 @@ function App() {
 			.then(data => setTasks(data));
 	}, []);
 
+	const toggleSort = () => {
+		setIsSorted(prev => !prev);
+	};
+
 	const addTask = (newTask) => {
 		setTasks([...tasks, newTask]);
 	};
+
 	const editTask = (id) => {
-		setTasks(tasks.filter(task => task.id !== id));
+		const task = tasks.find(t => t.id === id);
+
+		if (task) {
+			setTaskToEdit(task);
+		}
 	};
+
 	const deleteTask = (id) => {
 		setTasks(tasks.filter(task => task.id !== id));
 	};
 
+
 	return <LayoutApp
 		tasks={tasks}
 		addTask={addTask}
-		editTask={editTask}
+		setTaskToEdit={setTaskToEdit}
 		deleteTask={deleteTask}
-
+		toggleSort={toggleSort}
+		isSorted={isSorted}
 	/>;
 
 }
-
 export default App
