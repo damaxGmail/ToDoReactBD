@@ -87,7 +87,6 @@ function App() {
 		setTasks(tasks.filter(task => task.id !== id));
 	};
 
-
 	return <LayoutApp
 		tasks={filteredTasks}
 		addTask={addTask}
