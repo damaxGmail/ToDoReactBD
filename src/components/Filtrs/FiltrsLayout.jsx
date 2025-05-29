@@ -1,6 +1,15 @@
 import styles from './Filtrs.module.css';
+import { useState } from 'react'
 
-export const FiltrsLayout = ({ isSorted, toggleSort, handleFindTaks }) => {
+export const FiltrsLayout = ({ isSorted, toggleSort, onSearch }) => {
+	const [searchQuery, setSearchQuery] = useState('');
+
+	const handleChange = (e) => {
+		const query = e.target.value;
+		setSearchQuery(query);
+		onSearch(query);
+	};
+
 	return (
 		<>
 			<div className={styles.root}>
@@ -20,12 +29,10 @@ export const FiltrsLayout = ({ isSorted, toggleSort, handleFindTaks }) => {
 						className={styles.find_task_block__input}
 						type="text"
 						placeholder="Поиск..."
-					// value={taskText}
-					// onChange={onInputChange}
+						value={searchQuery}
+						onChange={handleChange}
 					/>
-					<button className={styles.task_item__action_button} onClick={handleFindTaks}>
-						{`=>`}
-					</button>
+
 				</div>
 			</div>
 		</>

@@ -6,7 +6,7 @@ import { NewTask } from './components/NewTask/NewTask'
 import { TaskList } from './components/TaskList/TaskList'
 import { Filtrs } from './components/Filtrs/Filtrs'
 
-function LayoutApp({ tasks, addTask, setTaskToEdit, deleteTask, toggleSort, isSorted }) {
+function LayoutApp({ tasks, addTask, setTaskToEdit, deleteTask, toggleSort, isSorted, onSearch }) {
 
 	return (
 		<>
@@ -17,7 +17,7 @@ function LayoutApp({ tasks, addTask, setTaskToEdit, deleteTask, toggleSort, isSo
 
 				<div className={styles.mainContent}>
 					<div className={styles.filtrsContainer}>
-						<Filtrs isSorted={isSorted} toggleSort={toggleSort} />
+						<Filtrs isSorted={isSorted} toggleSort={toggleSort} onSearch={onSearch} />
 					</div>
 
 					<div className={styles.taskListContainer}>
@@ -34,12 +34,38 @@ function App() {
 	const [taskToEdit, setTaskToEdit] = useState(null);
 	const [isSorted, setIsSorted] = useState(false);
 
+	const [searchQuery, setSearchQuery] = useState('');
+	const [filteredTasks, setFilteredTasks] = useState([]);
+
 	//npx json-server@0.17.4 --watch src/json/archivTasks.json --port 5703
 	useEffect(() => {
 		fetch('http://localhost:5703/tasks')
 			.then(res => res.json())
 			.then(data => setTasks(data));
 	}, []);
+
+	useEffect(() => {
+		let result = [...tasks];
+
+		if (searchQuery.trim()) {
+			result = result.filter(task =>
+				task.text.toLowerCase().includes(searchQuery.toLowerCase())
+			);
+		}
+
+		if (isSorted) {
+			result = [...result].sort((a, b) =>
+				a.text.localeCompare(b.text)
+			);
+		}
+
+		setFilteredTasks(result);
+	}, [tasks, isSorted, searchQuery]);
+
+
+	const handleSearch = (query) => {
+		setSearchQuery(query);
+	};
 
 	const toggleSort = () => {
 		setIsSorted(prev => !prev);
@@ -63,12 +89,13 @@ function App() {
 
 
 	return <LayoutApp
-		tasks={tasks}
+		tasks={filteredTasks}
 		addTask={addTask}
 		setTaskToEdit={setTaskToEdit}
 		deleteTask={deleteTask}
 		toggleSort={toggleSort}
 		isSorted={isSorted}
+		onSearch={handleSearch}
 	/>;
 
 }
