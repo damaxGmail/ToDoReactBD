@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { TaskListLayout } from './TaskListLayout'
 
-export const TaskList = ({ tasks, deleteTask, setTaskToEdit, isSorted }) => {
-	const [isLoading, setIsLoading] = useState(false);
+// import {use_deleteTask} from '.../hooks'
+
+export const TaskList = ({ tasks, loading, deleteTask, setTaskToEdit, isSorted }) => {
+
 	const [sortedTasks, setSortedTasks] = useState(tasks);
 
 	useEffect(() => {
@@ -41,7 +43,7 @@ export const TaskList = ({ tasks, deleteTask, setTaskToEdit, isSorted }) => {
 
 	return (
 		<TaskListLayout
-			isLoading={isLoading}
+			isLoading={loading}
 
 			tasks={isSorted ? sortedTasks : tasks}
 

@@ -7,12 +7,6 @@
       "text": "новая задача"
     },
     {
-      "id": "1748552358649",
-      "completed": false,
-      "type": "MakeTask",
-      "text": "кечнееее"
-    },
-    {
       "id": "1748554798004",
       "completed": false,
       "type": "MakeTask",
@@ -23,6 +17,18 @@
       "completed": false,
       "type": "MakeTask",
       "text": "a"
+    },
+    {
+      "id": "1748988673767",
+      "completed": false,
+      "type": "MakeTask",
+      "text": "аааааааа"
+    },
+    {
+      "id": "1748989934720",
+      "completed": false,
+      "type": "MakeTask",
+      "text": "чапчр"
     }
   ]
 }

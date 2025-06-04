@@ -6,11 +6,17 @@ import { NewTask } from './components/NewTask/NewTask'
 import { TaskList } from './components/TaskList/TaskList'
 import { Filtrs } from './components/Filtrs/Filtrs'
 
-function LayoutApp({ tasks, addTask, setTaskToEdit, deleteTask, toggleSort, isSorted, onSearch }) {
+// import { use_AllTasks } from './hooks';
+
+function LayoutApp({ tasks, loading, addTask, setTaskToEdit, deleteTask, toggleSort, isSorted, onSearch }) {
 
 	return (
 		<>
 			<div className={styles.appContainer}>
+				<div className={styles.Header}>
+					<h1>Создание и работа со списком</h1>
+				</div>
+
 				<div className={styles.newTaskBlock}>
 					<NewTask addTask={addTask} />
 				</div>
@@ -21,7 +27,12 @@ function LayoutApp({ tasks, addTask, setTaskToEdit, deleteTask, toggleSort, isSo
 					</div>
 
 					<div className={styles.taskListContainer}>
-						<TaskList tasks={tasks} deleteTask={deleteTask} setTaskToEdit={setTaskToEdit} isSorted={isSorted} />
+						<TaskList tasks={tasks}
+							loading={loading}
+							deleteTask={deleteTask}
+							setTaskToEdit={setTaskToEdit}
+							isSorted={isSorted}
+						/>
 					</div>
 				</div>
 			</div>
@@ -31,6 +42,7 @@ function LayoutApp({ tasks, addTask, setTaskToEdit, deleteTask, toggleSort, isSo
 }
 function App() {
 	const [tasks, setTasks] = useState([]);
+	const [loading, setLoading] = useState(false);
 	const [taskToEdit, setTaskToEdit] = useState(null);
 	const [isSorted, setIsSorted] = useState(false);
 
@@ -43,6 +55,7 @@ function App() {
 			.then(res => res.json())
 			.then(data => setTasks(data));
 	}, []);
+	//const { tasks, loading } = use_AllTasks();
 
 	useEffect(() => {
 		let result = [...tasks];
@@ -58,8 +71,8 @@ function App() {
 				a.text.localeCompare(b.text)
 			);
 		}
-
 		setFilteredTasks(result);
+
 	}, [tasks, isSorted, searchQuery]);
 
 
@@ -89,6 +102,7 @@ function App() {
 
 	return <LayoutApp
 		tasks={filteredTasks}
+		loading={loading}
 		addTask={addTask}
 		setTaskToEdit={setTaskToEdit}
 		deleteTask={deleteTask}
