@@ -6,6 +6,9 @@ import { NewTask } from './components/NewTask/NewTask'
 import { TaskList } from './components/TaskList/TaskList'
 import { Filtrs } from './components/Filtrs/Filtrs'
 
+import { ref, onValue } from "firebase/database"
+import { db } from './firebase'
+
 function LayoutApp({ tasks, addTask, setTaskToEdit, deleteTask, toggleSort, isSorted, onSearch }) {
 
 	return (
@@ -38,14 +41,44 @@ function App() {
 	const [filteredTasks, setFilteredTasks] = useState([]);
 
 	//npx json-server@0.17.4 --watch src/json/archivTasks.json --port 5703
+
+	//загрузка задач +++
+	//старое
+	// useEffect(() => {
+	// 	fetch('http://localhost:5703/tasks')
+	// 		.then(res => res.json())
+	// 		.then(data => setTasks(data));
+	// }, []);
+
+	//новое
 	useEffect(() => {
-		fetch('http://localhost:5703/tasks')
-			.then(res => res.json())
-			.then(data => setTasks(data));
+		const tasksDbRef = ref(db, 'tasks');
+		return onValue(tasksDbRef, (snapshot) => {
+			const loadedTasks = snapshot.val() || [];
+
+			const formattedTasks = Object.entries(loadedTasks).map(([key, task]) => ({
+				id: key,
+				...task
+			}));
+
+
+			setTasks(formattedTasks);
+			//setTasks(Object.entries(loadedTasks));
+
+			//console.log(tasks);
+		});
+
+		// fetch('http://localhost:5703/tasks')
+		// 	.then(loadedData => loadedData.json())
+		// 	.then(loadedTasks => setTasks(loadedTasks));
 	}, []);
+
+	//загрузка задач ---
+
 
 	useEffect(() => {
 		let result = [...tasks];
+
 
 		if (searchQuery.trim()) {
 			result = result.filter(task =>

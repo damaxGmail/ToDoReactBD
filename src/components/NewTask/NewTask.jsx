@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { NewTaskLayout } from './NewTaskLayout';
 
+import { ref, push } from 'firebase/database'
+import { db } from '../../firebase'
+
 export const NewTask = ({ addTask }) => {
 	const [taskText, setTaskText] = useState('');
 
@@ -18,22 +21,28 @@ export const NewTask = ({ addTask }) => {
 		}
 
 		const newTask = {
-			id: Date.now().toString(),
+			//id: Date.now().toString(),
 			completed: false,
 			type: 'MakeTask',
 			text: trimmedText
 		};
 
-		fetch('http://localhost:5703/tasks', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(newTask),
-		})
-			.then(res => res.json())
-			.then(savedTask => {
-				addTask(savedTask);
-			});
+		//замена на firebase+++
+		const tasksDbRef = ref(db, 'tasks');
+		push(tasksDbRef, newTask);
 
+
+		// fetch('http://localhost:5703/tasks', {
+		// 	method: 'POST',
+		// 	headers: { 'Content-Type': 'application/json' },
+		// 	body: JSON.stringify(newTask),
+		// })
+		// 	.then(res => res.json())
+		// 	.then(savedTask => {
+		// 		addTask(savedTask);
+		// 	});
+
+		//---
 		setTaskText('');
 	};
 

@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import { TaskListLayout } from './TaskListLayout'
 
+import { ref, remove } from 'firebase/database'
+import { db } from '../../firebase'
+
 export const TaskList = ({ tasks, deleteTask, setTaskToEdit, isSorted }) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [sortedTasks, setSortedTasks] = useState(tasks);
@@ -28,15 +31,22 @@ export const TaskList = ({ tasks, deleteTask, setTaskToEdit, isSorted }) => {
 
 	const handleDeleteButton = (id) => {
 
-		fetch(`http://localhost:5703/tasks/${id}`, {
-			method: 'DELETE',
-		})
-			.then(() => {
-				deleteTask(id);
-			})
-			.catch((err) => {
-				console.error('Ошибка при удалении:', err);
-			});
+		console.log(`tasks/${id}`);
+		//удаление +++
+
+		const taskDelete = ref(db, `tasks/${id}`);
+		remove(taskDelete);
+
+		// fetch(`http://localhost:5703/tasks/${id}`, {
+		// 	method: 'DELETE',
+		// })
+		// 	.then(() => {
+		// 		deleteTask(id);
+		// 	})
+		// 	.catch((err) => {
+		// 		console.error('Ошибка при удалении:', err);
+		// 	});
+		//---
 	}
 
 	return (
