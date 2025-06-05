@@ -1,41 +1,39 @@
-import styles from "./TaskList.module.css"
-import { useState } from 'react'
-import { EditModal } from "../EditModal/EditModal";
+import { useState, useEffect } from 'react';
+import styles from './TaskList.module.css';
 
-import { ref, set } from 'firebase/database'
-import { db } from '../../firebase'
+import { EditModal } from '../EditModal/EditModal'
 
-export const TaskListLayout = ({ isLoading, tasks, setTaskToEdit: onEdit, handleDeleteButton }) => {
+export const TaskListLayout = ({
+	isLoading,
+	tasks,
+	handleEdit,
+	handleSave,
+	editingTask,
+	setEditingTask,
+	setTaskToEdit,
+	handleDeleteButton
+}) => {
+	const [newText, setNewText] = useState('');
 
-	const [editingTask, setEditingTask] = useState(null);
+	useEffect(() => {
+		if (editingTask) {
+			setNewText(editingTask.text);
+		}
+	}, [editingTask]);
 
-	const handleEdit = (id) => {
-
-		const taskToEdit = tasks.find(t => t.id === id);
-
-		setEditingTask(taskToEdit);
-		onEdit(taskToEdit);
+	const onSave = () => {
+		console.log("onSave " + editingTask);
+		const updatedTask = {
+			...editingTask,
+			text: newText
+		};
+		handleSave(updatedTask);
 	};
 
-	const handleSave = (updatedTask) => {
-		if (!updatedTask || !updatedTask.id) return;
-
-		//свой хук ???
-		const editOurTask = ref(db, `tasks/${updatedTask.id}`);
-		set(editOurTask, {
-			text: updatedTask.text,
-			completed: updatedTask.completed,
-			type: updatedTask.type
-		})
-			.then(() => {
-				onEdit(updatedTask); // обновляем локальное состояние
-				setEditingTask(null);
-			})
-			.catch(err => {
-				console.error('Не удалось обновить задачу:', err);
-			});
-
-
+	const onClose = () => {
+		setNewText('');
+		setEditingTask(null);
+		setTaskToEdit(null);
 	};
 
 	return (
@@ -65,7 +63,9 @@ export const TaskListLayout = ({ isLoading, tasks, setTaskToEdit: onEdit, handle
 
 								{/* Кнопки справа */}
 								<div className={styles.task_item__buttons}>
-									<button className={styles.task_item__edit_button} type="button"
+									<button
+										className={styles.task_item__edit_button}
+										type="button"
 										onClick={() => handleEdit(id)}
 									>
 										<img
@@ -85,30 +85,19 @@ export const TaskListLayout = ({ isLoading, tasks, setTaskToEdit: onEdit, handle
 							</div>
 						</div>
 					))
-
-
-
 				)}
 			</div>
 
-			{
-				editingTask && (
-					<EditModal
-						task={editingTask}
-						onSave={(newText) => {
-
-							const updatedTask = {
-								...editingTask,
-								text: newText
-							};
-							setEditingTask(updatedTask);
-							handleSave(updatedTask);
-						}}
-						onClose={() => setEditingTask(null)}
-					/>
-				)
-			}
+			{/* Модальное окно */}
+			{editingTask && (
+				<EditModal
+					task={editingTask}
+					newText={newText}
+					setNewText={setNewText}
+					onSave={onSave}
+					onClose={onClose}
+				/>
+			)}
 		</>
-
 	);
 };

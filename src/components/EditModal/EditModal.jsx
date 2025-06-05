@@ -1,39 +1,22 @@
 import styles from './EditModal.module.css';
-import { useState } from 'react';
 
-export const EditModal = ({ task, onClose, onSave }) => {
-	const [text, setText] = useState(task.text);
-
-	const handleSubmit = (e) => {
-		e.preventDefault();
-		onSave(text);
-	};
+export const EditModal = ({ task, newText, setNewText, onSave, onClose }) => {
 
 	return (
 		<div className={styles.modalOverlay}>
-			<form className={styles.deleteModal} onSubmit={handleSubmit}>
-				<h3 className={styles.deleteModal__question}>
-					Редактировать задачу:
-				</h3>
+			<form className={styles.deleteModal} onSubmit={onSave}>
+				<h3 className={styles.deleteModal__question}>Редактировать задачу:</h3>
 				<input
-					className={styles.deleteModal__input}
 					type="text"
-					value={text}
-					onChange={(e) => setText(e.target.value)}
-					autoFocus
+					value={newText}
+					onChange={(e) => setNewText(e.target.value)}
+					className={styles.deleteModal__input}
 				/>
 				<div className={styles.deleteModal__buttons}>
-					<button
-						className={styles.deleteModal__button}
-						type="button"
-						onClick={onClose}
-					>
+					<button type="button" onClick={onClose} className={styles.deleteModal__button}>
 						Отмена
 					</button>
-					<button
-						className={`${styles.deleteModal__button} ${styles.deleteModal__confirmButton}`}
-						type="submit"
-					>
+					<button type="submit" className={`${styles.deleteModal__button} ${styles.deleteModal__confirmButton}`}>
 						Сохранить
 					</button>
 				</div>
