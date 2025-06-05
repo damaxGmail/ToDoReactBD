@@ -4,6 +4,16 @@
   min-height: 100vh;
 }
 
+.headerBlock {
+  width: 100%;
+  padding: 20px;
+  background-color: #ffffd9;
+
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
 .newTaskBlock {
   width: 100%;
   padding: 20px;

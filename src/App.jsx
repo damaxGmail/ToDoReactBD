@@ -14,6 +14,9 @@ function LayoutApp({ tasks, addTask, setTaskToEdit, deleteTask, toggleSort, isSo
 	return (
 		<>
 			<div className={styles.appContainer}>
+				<div className={styles.headerBlock}>
+					<h1>Работа со списком задач :</h1>
+				</div>
 				<div className={styles.newTaskBlock}>
 					<NewTask addTask={addTask} />
 				</div>
