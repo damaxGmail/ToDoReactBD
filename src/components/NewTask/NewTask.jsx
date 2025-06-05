@@ -27,22 +27,10 @@ export const NewTask = ({ addTask }) => {
 			text: trimmedText
 		};
 
-		//замена на firebase+++
+		//свой хук ???
 		const tasksDbRef = ref(db, 'tasks');
 		push(tasksDbRef, newTask);
 
-
-		// fetch('http://localhost:5703/tasks', {
-		// 	method: 'POST',
-		// 	headers: { 'Content-Type': 'application/json' },
-		// 	body: JSON.stringify(newTask),
-		// })
-		// 	.then(res => res.json())
-		// 	.then(savedTask => {
-		// 		addTask(savedTask);
-		// 	});
-
-		//---
 		setTaskText('');
 	};
 

@@ -42,15 +42,7 @@ function App() {
 
 	//npx json-server@0.17.4 --watch src/json/archivTasks.json --port 5703
 
-	//загрузка задач +++
-	//старое
-	// useEffect(() => {
-	// 	fetch('http://localhost:5703/tasks')
-	// 		.then(res => res.json())
-	// 		.then(data => setTasks(data));
-	// }, []);
-
-	//новое
+	//свой хук ???
 	useEffect(() => {
 		const tasksDbRef = ref(db, 'tasks');
 		return onValue(tasksDbRef, (snapshot) => {
@@ -60,21 +52,12 @@ function App() {
 				id: key,
 				...task
 			}));
-
-
 			setTasks(formattedTasks);
-			//setTasks(Object.entries(loadedTasks));
 
-			//console.log(tasks);
 		});
 
-		// fetch('http://localhost:5703/tasks')
-		// 	.then(loadedData => loadedData.json())
-		// 	.then(loadedTasks => setTasks(loadedTasks));
+
 	}, []);
-
-	//загрузка задач ---
-
 
 	useEffect(() => {
 		let result = [...tasks];

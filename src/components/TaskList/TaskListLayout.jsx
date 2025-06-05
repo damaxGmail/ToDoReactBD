@@ -20,42 +20,7 @@ export const TaskListLayout = ({ isLoading, tasks, setTaskToEdit: onEdit, handle
 	const handleSave = (updatedTask) => {
 		if (!updatedTask || !updatedTask.id) return;
 
-		//старое
-
-		// Сначала получаем весь список задач
-		// fetch('http://localhost:5703/tasks')
-		// 	.then(res => res.json())
-		// 	.then(taskList => {
-		// 		const taskIndex = taskList.findIndex(t => t.id === updatedTask.id);
-
-		// 		if (taskIndex > -1) {
-		// 			taskList[taskIndex] = updatedTask;
-
-		// 			// Теперь отправляем обновлённый список
-		// 			return fetch('http://localhost:5703/tasks', {
-		// 				method: 'PUT',
-		// 				headers: { 'Content-Type': 'application/json' },
-		// 				body: JSON.stringify(taskList),
-		// 			})
-		// 				.then(res => {
-		// 					if (!res.ok) {
-		// 						throw new Error('Ошибка сохранения');
-		// 					}
-		// 					return res.json();
-		// 				})
-		// 				.then(() => {
-		// 					onEdit(updatedTask);
-		// 					setEditingTask(null);
-		// 				});
-		// 		} else {
-		// 			console.error('Задача не найдена в списке');
-		// 		}
-		// 	})
-		// 	.catch(err => {
-		// 		console.error('Не удалось обновить задачу:', err);
-		// 	});
-
-		//новое с Firebase
+		//свой хук ???
 		const editOurTask = ref(db, `tasks/${updatedTask.id}`);
 		set(editOurTask, {
 			text: updatedTask.text,
@@ -70,7 +35,6 @@ export const TaskListLayout = ({ isLoading, tasks, setTaskToEdit: onEdit, handle
 				console.error('Не удалось обновить задачу:', err);
 			});
 
-		//---
 
 	};
 
