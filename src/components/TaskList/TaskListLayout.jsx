@@ -22,7 +22,7 @@ export const TaskListLayout = ({
 	}, [editingTask]);
 
 	const onSave = () => {
-		console.log("onSave " + editingTask);
+
 		const updatedTask = {
 			...editingTask,
 			text: newText

@@ -9,7 +9,9 @@ import { Filtrs } from './components/Filtrs/Filtrs'
 import { ref, onValue } from "firebase/database"
 import { db } from './firebase'
 
-function LayoutApp({ tasks, addTask, setTaskToEdit, deleteTask, toggleSort, isSorted, onSearch }) {
+import { useTasks } from './hooks/useTasks';
+
+function LayoutApp({ tasks, addTask, setTaskToEdit, toggleSort, isSorted, onSearch }) {
 
 	return (
 		<>
@@ -27,7 +29,7 @@ function LayoutApp({ tasks, addTask, setTaskToEdit, deleteTask, toggleSort, isSo
 					</div>
 
 					<div className={styles.taskListContainer}>
-						<TaskList tasks={tasks} deleteTask={deleteTask} setTaskToEdit={setTaskToEdit} isSorted={isSorted} />
+						<TaskList tasks={tasks} setTaskToEdit={setTaskToEdit} isSorted={isSorted} />
 					</div>
 				</div>
 			</div>
@@ -36,31 +38,13 @@ function LayoutApp({ tasks, addTask, setTaskToEdit, deleteTask, toggleSort, isSo
 	)
 }
 function App() {
-	const [tasks, setTasks] = useState([]);
 	const [taskToEdit, setTaskToEdit] = useState(null);
 	const [isSorted, setIsSorted] = useState(false);
 
 	const [searchQuery, setSearchQuery] = useState('');
 	const [filteredTasks, setFilteredTasks] = useState([]);
 
-	//npx json-server@0.17.4 --watch src/json/archivTasks.json --port 5703
-
-	//свой хук ???
-	useEffect(() => {
-		const tasksDbRef = ref(db, 'tasks');
-		return onValue(tasksDbRef, (snapshot) => {
-			const loadedTasks = snapshot.val() || [];
-
-			const formattedTasks = Object.entries(loadedTasks).map(([key, task]) => ({
-				id: key,
-				...task
-			}));
-			setTasks(formattedTasks);
-
-		});
-
-
-	}, []);
+	const { tasks, setTasks, loading } = useTasks();
 
 	useEffect(() => {
 		let result = [...tasks];
@@ -81,6 +65,9 @@ function App() {
 		setFilteredTasks(result);
 	}, [tasks, isSorted, searchQuery]);
 
+	const addTask = (newTask) => {
+		setTasks([...tasks, newTask]);
+	};
 
 	const handleSearch = (query) => {
 		setSearchQuery(query);
@@ -90,9 +77,6 @@ function App() {
 		setIsSorted(prev => !prev);
 	};
 
-	const addTask = (newTask) => {
-		setTasks([...tasks, newTask]);
-	};
 
 	const editTask = (id) => {
 		const task = tasks.find(t => t.id === id);
@@ -102,16 +86,12 @@ function App() {
 		}
 	};
 
-	const deleteTask = (id) => {
-		setTasks(tasks.filter(task => task.id !== id));
-	};
-
 
 	return <LayoutApp
 		tasks={filteredTasks}
 		addTask={addTask}
 		setTaskToEdit={setTaskToEdit}
-		deleteTask={deleteTask}
+
 		toggleSort={toggleSort}
 		isSorted={isSorted}
 		onSearch={handleSearch}

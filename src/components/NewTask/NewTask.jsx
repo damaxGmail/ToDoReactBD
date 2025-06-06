@@ -4,8 +4,11 @@ import { NewTaskLayout } from './NewTaskLayout';
 import { ref, push } from 'firebase/database'
 import { db } from '../../firebase'
 
-export const NewTask = ({ addTask }) => {
+import { useAddTask } from '../../hooks/useAddTask';
+
+export const NewTask = () => {
 	const [taskText, setTaskText] = useState('');
+	const { addTask } = useAddTask();
 
 	const handleInputChange = (e) => {
 		setTaskText(e.target.value);
@@ -27,9 +30,7 @@ export const NewTask = ({ addTask }) => {
 			text: trimmedText
 		};
 
-		//свой хук ???
-		const tasksDbRef = ref(db, 'tasks');
-		push(tasksDbRef, newTask);
+		addTask(newTask);
 
 		setTaskText('');
 	};

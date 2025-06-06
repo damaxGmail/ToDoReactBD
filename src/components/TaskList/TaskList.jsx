@@ -4,10 +4,17 @@ import { TaskListLayout } from './TaskListLayout'
 import { ref, remove, set } from 'firebase/database'
 import { db } from '../../firebase'
 
-export const TaskList = ({ tasks, deleteTask, setTaskToEdit, isSorted }) => {
+import { useDeleteTask } from '../../hooks/useDeleteTask';
+import { useEditTask } from '../../hooks/useEditTask';
+
+export const TaskList = ({ tasks, setTaskToEdit, isSorted }) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [sortedTasks, setSortedTasks] = useState(tasks);
 	const [editingTask, setEditingTask] = useState(null);
+
+
+	const { deleteTask } = useDeleteTask();
+	const { editTask } = useEditTask();
 
 	useEffect(() => {
 		if (isSorted) {
@@ -31,24 +38,11 @@ export const TaskList = ({ tasks, deleteTask, setTaskToEdit, isSorted }) => {
 	};
 
 	const handleSave = (updatedTask) => {
-		console.log('handleSave ' + updatedTask);
+
 		if (!updatedTask || !updatedTask.id) return;
 
-		//свой хук ???
-		const editOurTask = ref(db, `tasks/${updatedTask.id}`);
-		set(editOurTask, {
-			text: updatedTask.text,
-			completed: updatedTask.completed,
-			type: updatedTask.type
-		})
-			.then(() => {
-				setTaskToEdit(updatedTask);
-				setEditingTask(null);
-			})
-			.catch(err => {
-				console.error('Не удалось обновить задачу:', err);
-			});
-
+		editTask(updatedTask);
+		setTaskToEdit(null);
 
 	};
 
@@ -62,10 +56,8 @@ export const TaskList = ({ tasks, deleteTask, setTaskToEdit, isSorted }) => {
 
 
 	const handleDeleteButton = (id) => {
-		//свой хук ???
-		const taskDelete = ref(db, `tasks/${id}`);
-		remove(taskDelete);
 
+		deleteTask(id);
 	}
 
 	return (
