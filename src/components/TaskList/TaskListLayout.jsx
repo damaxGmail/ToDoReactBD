@@ -13,6 +13,7 @@ export const TaskListLayout = ({
 	setTaskToEdit,
 	handleDeleteButton
 }) => {
+
 	const [newText, setNewText] = useState('');
 
 	useEffect(() => {

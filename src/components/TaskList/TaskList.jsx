@@ -12,7 +12,6 @@ export const TaskList = ({ tasks, setTaskToEdit, isSorted }) => {
 	const [sortedTasks, setSortedTasks] = useState(tasks);
 	const [editingTask, setEditingTask] = useState(null);
 
-
 	const { deleteTask } = useDeleteTask();
 	const { editTask } = useEditTask();
 
@@ -46,15 +45,6 @@ export const TaskList = ({ tasks, setTaskToEdit, isSorted }) => {
 
 	};
 
-	const handleEditButton = (id) => {
-		const task = tasks.find(t => t.id === id);
-		if (task) {
-			// Сначинаем редактирование
-			setTaskToEdit(task);
-		}
-	};
-
-
 	const handleDeleteButton = (id) => {
 
 		deleteTask(id);
@@ -68,7 +58,6 @@ export const TaskList = ({ tasks, setTaskToEdit, isSorted }) => {
 
 			handleEdit={handleEdit}
 			handleSave={handleSave}
-			deleteTask={deleteTask}
 			editingTask={editingTask}
 			setEditingTask={setEditingTask}
 			setTaskToEdit={setTaskToEdit}
