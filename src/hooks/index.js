@@ -1,4 +1,4 @@
-export { use_AllTasks } from "./use_AllTasks";
-export { use_addNewTask } from "./use_addNewTask";
-export { use_deleteTask } from "./use_deleteTask";
-export { use_editTask } from "./use_editTask";
+export { useAllTasks } from "./useAllTasks";
+export { useAddNewTask } from "./useAddNewTask";
+export { useDeleteTask } from "./useDeleteTask";
+export { useEditTask } from "./useEditTask";

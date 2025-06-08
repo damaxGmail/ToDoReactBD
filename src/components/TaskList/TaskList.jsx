@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { TaskListLayout } from './TaskListLayout'
 
-// import {use_deleteTask} from '.../hooks'
+import { useDeleteTask } from '../../hooks';
 
 export const TaskList = ({ tasks, loading, deleteTask, setTaskToEdit, isSorted }) => {
 
 	const [sortedTasks, setSortedTasks] = useState(tasks);
+	const { hookDeleteTask } = useDeleteTask();
 
 	useEffect(() => {
 		if (isSorted) {
@@ -30,9 +31,7 @@ export const TaskList = ({ tasks, loading, deleteTask, setTaskToEdit, isSorted }
 
 	const handleDeleteButton = (id) => {
 
-		fetch(`http://localhost:5703/tasks/${id}`, {
-			method: 'DELETE',
-		})
+		hookDeleteTask(id)
 			.then(() => {
 				deleteTask(id);
 			})

@@ -6,9 +6,13 @@ import { NewTask } from './components/NewTask/NewTask'
 import { TaskList } from './components/TaskList/TaskList'
 import { Filtrs } from './components/Filtrs/Filtrs'
 
-// import { use_AllTasks } from './hooks';
+import { useAllTasks } from '/src/hooks';
 
-function LayoutApp({ tasks, loading, addTask, setTaskToEdit, deleteTask, toggleSort, isSorted, onSearch }) {
+function LayoutApp({ tasks, loading,
+	addTask,
+	setTaskToEdit,
+	deleteTask,
+	toggleSort, isSorted, onSearch }) {
 
 	return (
 		<>
@@ -18,7 +22,9 @@ function LayoutApp({ tasks, loading, addTask, setTaskToEdit, deleteTask, toggleS
 				</div>
 
 				<div className={styles.newTaskBlock}>
-					<NewTask addTask={addTask} />
+					<NewTask
+						addTask={addTask}
+					/>
 				</div>
 
 				<div className={styles.mainContent}>
@@ -41,8 +47,10 @@ function LayoutApp({ tasks, loading, addTask, setTaskToEdit, deleteTask, toggleS
 	)
 }
 function App() {
-	const [tasks, setTasks] = useState([]);
-	const [loading, setLoading] = useState(false);
+	// const [tasks, setTasks] = useState([]);
+	// const [loading, setLoading] = useState(false);
+	const { tasks, loading, setTasks } = useAllTasks();
+
 	const [taskToEdit, setTaskToEdit] = useState(null);
 	const [isSorted, setIsSorted] = useState(false);
 
@@ -50,12 +58,6 @@ function App() {
 	const [filteredTasks, setFilteredTasks] = useState([]);
 
 	//npx json-server@0.17.4 --watch src/json/archivTasks.json --port 5703
-	useEffect(() => {
-		fetch('http://localhost:5703/tasks')
-			.then(res => res.json())
-			.then(data => setTasks(data));
-	}, []);
-	//const { tasks, loading } = use_AllTasks();
 
 	useEffect(() => {
 		let result = [...tasks];
@@ -74,6 +76,14 @@ function App() {
 		setFilteredTasks(result);
 
 	}, [tasks, isSorted, searchQuery]);
+
+	useEffect(() => {
+		if (!taskToEdit) return;
+
+		setTasks(prev =>
+			prev.map(task => (task.id === taskToEdit.id ? taskToEdit : task))
+		);
+	}, [taskToEdit]);
 
 
 	const handleSearch = (query) => {

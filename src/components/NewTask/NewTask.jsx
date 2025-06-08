@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { NewTaskLayout } from './NewTaskLayout';
 
-//import { use_addNewTask } from './hooks';
+import { useAddNewTask } from '../../hooks';
+
 
 export const NewTask = ({ addTask }) => {
 	const [taskText, setTaskText] = useState('');
@@ -9,13 +10,8 @@ export const NewTask = ({ addTask }) => {
 		setTaskText(e.target.value);
 	};
 
-	// const {
-	// 	taskText,
-	// 	setTaskText,
-	// 	handleInputChange,
-	// 	addNewTask
-	// } = use_addNewTask();
 
+	const { addNewTask } = useAddNewTask();
 
 
 	const handleSubmit = (e) => {
@@ -34,28 +30,14 @@ export const NewTask = ({ addTask }) => {
 			text: trimmedText
 		};
 
-
-
-		// addNewTask(newTask)
-		// 	.then(savedTask => {
-		// 		addTask(savedTask);
-		// 	})
-		// 	.catch(err => {
-		// 		console.error('Ошибка при добавлении задачи:', err);
-		// 	});
-
-
-		//const { addNewTask } = use_addNewTask(addTask, newTask);
-
-		fetch('http://localhost:5703/tasks', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(newTask),
-		})
-			.then(res => res.json())
+		addNewTask(newTask)
 			.then(savedTask => {
 				addTask(savedTask);
+			})
+			.catch(err => {
+				console.error('Ошибка при добавлении задачи:', err);
 			});
+
 
 		setTaskText('');
 	};

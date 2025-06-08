@@ -2,12 +2,16 @@ import styles from "./TaskList.module.css"
 import { useState } from 'react'
 import { EditModal } from "../EditModal/EditModal";
 
+import { useEditTask } from '../../hooks';
+
 export const TaskListLayout = ({ isLoading, tasks, setTaskToEdit: onEdit, handleDeleteButton }) => {
 
 	const [editingTask, setEditingTask] = useState(null);
 
+	const { EditTask } = useEditTask();
+
 	const handleEdit = (id) => {
-		console.log(id);
+		if (!id) return;
 
 		const taskToEdit = tasks.find(t => t.id === id);
 
@@ -15,19 +19,31 @@ export const TaskListLayout = ({ isLoading, tasks, setTaskToEdit: onEdit, handle
 		onEdit(taskToEdit);
 	};
 
-	const handleSave = (updatedTask) => {
-		if (updatedTask) {
-			fetch(`http://localhost:5703/tasks/${updatedTask.id}`, {
-				method: 'PUT',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(updatedTask),
-			})
-				.then(res => res.json())
-				.then(savedTask => {
-					onEdit(savedTask); // обновляем глобальное состояние
+	const handleSave = (updatedText) => {
+
+		const updatedTask = {
+			...editingTask,
+			text: updatedText
+		};
+
+		if (updatedTask && updatedTask.id) {
+
+			EditTask(editingTask.id, updatedTask)
+				.then(res => {
+					if (!res.ok) throw new Error('Ошибка сохранения');
+					return res.json();
+				})
+				.then(() => {
+					onEdit(updatedTask); // обновляем глобальное состояние
 					setEditingTask(null);
+				})
+				.catch(err => {
+					console.error('Не удалось обновить задачу:', err);
 				});
 		}
+
+
+
 	};
 
 	return (
@@ -59,6 +75,7 @@ export const TaskListLayout = ({ isLoading, tasks, setTaskToEdit: onEdit, handle
 								<div className={styles.task_item__buttons}>
 									<button className={styles.task_item__edit_button} type="button"
 										onClick={() => handleEdit(id)}
+									//onClick={() => onEdit(id)}
 									>
 										<img
 											src="/pic/pic_edit.png"
