@@ -87,3 +87,13 @@
   height: 20px;
   pointer-events: none;
 }
+
+.task_item__text {
+  font-size: 2rem;
+  line-height: 2.5rem;
+  display: block;
+  max-width: 95%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

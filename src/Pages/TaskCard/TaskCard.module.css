@@ -1,0 +1,70 @@
+.task_item__text {
+  font-size: 2rem;
+  line-height: 2.5rem;
+  flex: 1;
+  text-align: left;
+}
+
+.task_item__buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.task_item__edit_button,
+.task_item__delete_button {
+  cursor: pointer;
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 1.5rem;
+  line-height: 2.5rem;
+  transition: background-color 0.2s ease;
+}
+
+.task_item__delete_button:hover {
+  background-color: var(--delete-button-background);
+}
+
+.task_item__edit_button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+}
+
+.edit_icon {
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+}
+
+.error_home_link {
+  font-size: 2rem;
+  line-height: 2.5rem;
+  color: var(--text-color);
+  text-decoration: none;
+  background-color: var(--primary-color);
+  border: 2px solid var(--text-color);
+  padding: 5px 20px;
+  border-radius: 5px;
+  transition: 0.3s ease;
+  margin-top: 20px;
+}
+
+.error_home_link:hover {
+  box-shadow: 0 0 0 1px var(--text-color);
+  background-color: #00000066;
+}
+
+.task_item__text {
+  font-size: 2rem;
+  line-height: 2.5rem;
+  flex: 1;
+  text-align: left;
+  color: brown;
+}

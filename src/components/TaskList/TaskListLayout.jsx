@@ -2,22 +2,11 @@ import styles from "./TaskList.module.css"
 import { useState } from 'react'
 import { EditModal } from "../EditModal/EditModal";
 
-import { useEditTask } from '../../hooks';
+import { useNavigate } from 'react-router-dom';
 
 export const TaskListLayout = ({ isLoading, tasks, setTaskToEdit: onEdit, handleDeleteButton }) => {
 
-	const [editingTask, setEditingTask] = useState(null);
-
-	const { EditTask } = useEditTask();
-
-	const handleEdit = (id) => {
-		if (!id) return;
-
-		const taskToEdit = tasks.find(t => t.id === id);
-
-		setEditingTask(taskToEdit);
-		onEdit(taskToEdit);
-	};
+	const navigate = useNavigate();
 
 	const handleSave = (updatedText) => {
 
@@ -41,8 +30,6 @@ export const TaskListLayout = ({ isLoading, tasks, setTaskToEdit: onEdit, handle
 					console.error('Не удалось обновить задачу:', err);
 				});
 		}
-
-
 
 	};
 
@@ -68,29 +55,14 @@ export const TaskListLayout = ({ isLoading, tasks, setTaskToEdit: onEdit, handle
 									{/* <label htmlFor={id}></label> */}
 								</form>
 
-								{/* Текст задачи */}
-								<span className={styles.task_item__text}>{text}</span>
+								<span
+									className={styles.task_item__text}
+									onClick={() => navigate(`/task/${id}`)}
+									style={{ cursor: 'pointer' }}
+								>
+									{text}
+								</span>
 
-								{/* Кнопки справа */}
-								<div className={styles.task_item__buttons}>
-									<button className={styles.task_item__edit_button} type="button"
-										onClick={() => handleEdit(id)}
-									//onClick={() => onEdit(id)}
-									>
-										<img
-											src="/pic/pic_edit.png"
-											alt="Редактировать"
-											className={styles.edit_icon}
-										/>
-									</button>
-									<button
-										className={styles.task_item__delete_button}
-										type="button"
-										onClick={() => handleDeleteButton(id)}
-									>
-										Удалить
-									</button>
-								</div>
 							</div>
 						</div>
 					))
@@ -100,18 +72,7 @@ export const TaskListLayout = ({ isLoading, tasks, setTaskToEdit: onEdit, handle
 				)}
 			</div>
 
-			{
-				editingTask && (
-					<EditModal
-						task={editingTask}
-						onSave={(newText) => {
-							setEditingTask({ ...editingTask, text: newText });
-							handleSave(newText);
-						}}
-						onClose={() => setEditingTask(null)}
-					/>
-				)
-			}
+
 		</>
 
 	);

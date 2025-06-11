@@ -7,6 +7,7 @@ export const EditModal = ({ task, onClose, onSave }) => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		onSave(text);
+		onClose();
 	};
 
 	return (

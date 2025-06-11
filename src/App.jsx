@@ -8,47 +8,26 @@ import { Filtrs } from './components/Filtrs/Filtrs'
 
 import { useAllTasks } from '/src/hooks';
 
-function LayoutApp({ tasks, loading,
-	addTask,
-	setTaskToEdit,
-	deleteTask,
-	toggleSort, isSorted, onSearch }) {
+import { Routes, Route, Link } from 'react-router-dom'
+import { MainPage } from './Pages/MainPage/MainPage'
+import { TaskCard } from './Pages/TaskCard/TaskCard'
+import { Page404 } from './Pages/Page404/Page404'
+
+
+function LayoutApp({ children }) {
 
 	return (
 		<>
 			<div className={styles.appContainer}>
-				<div className={styles.Header}>
-					<h1>Создание и работа со списком</h1>
-				</div>
 
-				<div className={styles.newTaskBlock}>
-					<NewTask
-						addTask={addTask}
-					/>
-				</div>
+				{children}
 
-				<div className={styles.mainContent}>
-					<div className={styles.filtrsContainer}>
-						<Filtrs isSorted={isSorted} toggleSort={toggleSort} onSearch={onSearch} />
-					</div>
-
-					<div className={styles.taskListContainer}>
-						<TaskList tasks={tasks}
-							loading={loading}
-							deleteTask={deleteTask}
-							setTaskToEdit={setTaskToEdit}
-							isSorted={isSorted}
-						/>
-					</div>
-				</div>
 			</div>
 
 		</>
 	)
 }
 function App() {
-	// const [tasks, setTasks] = useState([]);
-	// const [loading, setLoading] = useState(false);
 	const { tasks, loading, setTasks } = useAllTasks();
 
 	const [taskToEdit, setTaskToEdit] = useState(null);
@@ -110,16 +89,33 @@ function App() {
 		setTasks(tasks.filter(task => task.id !== id));
 	};
 
-	return <LayoutApp
-		tasks={filteredTasks}
-		loading={loading}
-		addTask={addTask}
-		setTaskToEdit={setTaskToEdit}
-		deleteTask={deleteTask}
-		toggleSort={toggleSort}
-		isSorted={isSorted}
-		onSearch={handleSearch}
-	/>;
+	return (
+		<Routes>
+			<Route
+				path="/"
+				element={
+					<LayoutApp>
+						<MainPage tasks={filteredTasks}
+							loading={loading}
+							addTask={addTask}
+							setTaskToEdit={setTaskToEdit}
+							deleteTask={deleteTask}
+							toggleSort={toggleSort}
+							isSorted={isSorted}
+							onSearch={handleSearch} />
+					</LayoutApp>
 
+				}
+			/>
+
+			<Route path="/task/:id" element={<TaskCard
+				tasks={tasks}
+				setTaskToEdit={setTaskToEdit}
+				deleteTask={deleteTask}
+			/>} />
+			<Route path="*" element={<Page404 />} />
+
+		</Routes>
+	);
 }
 export default App
